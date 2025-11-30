@@ -4,6 +4,23 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+MatrikelNummer: 6544533
+Name:           Eric Herrgoß
+E-Mail:         eric.herrgoss@web.de
+Link zu dem Datensatz: https://www.physionet.org/content/sleep-edfx/1.0.0/
+--> Ich werde noch ein workupload link dazu schicken mit dem Datensatz weil von der Webseite des herunterzuladen braucht extrem lang 
+
+Note: Ich habe viel in Englisch gemacht weil es mir leichter viel. Außerdem habe ich KI verwendet um die Struktur und auch die Kommentare zu verbessern. 
+Für die Recherche hab ich viel auch mit online Datenbanken wie PsycINFO gearbeitet um Quellen oder empirische Daten zu finden. 
+Auch mit Perplexity konnte man gut Daten und Quellen finden. 
+
+Das Schlafphasen Model ist gut gelungen aber das Mental Disorder Model eher nicht hab viel rumexperimentiert. Binary trees haben es besser gemacht aber ned wirklich gut. Das war aber auch mal Intersant zu schauen wo man Modele verbessern kann und wie viel Daten ausmachen 
+
+Auch weiterzulesen bezüglich wie EEG Daten schon für Diagnosen oder Deutungen von Gedanken/träumen genutzt werden kann war intersant. Habe auch paar Sachen notiert dazu
+
+
+
+
 An academic project implementing **supervised** and **unsupervised** machine learning approaches for sleep phase detection using EEG/EOG/EMG physiological signals, with comprehensive **Explainable AI (XAI)** analysis.
 
 ---
