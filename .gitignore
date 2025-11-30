@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data files (large datasets)
+*.npy
+*.idx3-ubyte
+*.idx1-ubyte
+data/raw/*
+!data/raw/README.md
+data/processed/*
+!data/processed/README.md
+
+# Model files (can be large)
+*.joblib
+*.pth
+*.pt
+*.h5
+*.pkl
+models/*
+!models/README.md
+
+# Results and artifacts
+results/*
+!results/README.md
+artifacts/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+~*
+
+# Old project structure (not in use, excluded from repo)
+Code/
+Excercises/
+Mental_Disorders/
+Research/
+Skript/
+Dokumentation/
+test.py
