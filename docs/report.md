@@ -1,240 +1,380 @@
-# Explainable AI with EEG Data - Project Report
+# Explainable AI mit EEG-Daten - Projektbericht
 
-**Author**: Erich  
-**Institution**: DHBW - Semester 5  
-**Date**: November 2025  
-**Project**: Exploring Artificial Intelligence with EEG Brain Signal Analysis
-
----
-
-## Executive Summary
-
-This project explores the intersection of **EEG (Electroencephalography) brain signals** and **Artificial Intelligence**, focusing on two main applications: sleep stage classification and mental disorder detection. The work demonstrates both supervised and unsupervised machine learning approaches, with a strong emphasis on explainable AI (XAI) to understand model decisions.
-
-### Project Goals
-- ✅ Understand how AI works with physiological brain signals
-- ✅ Start with accessible problem: Sleep phase classification (5 stages)
-- ✅ Explore more complex domain: Mental disorder detection from EEG
-- ✅ Investigate cutting-edge EEG research (dream analysis, thought decoding)
-- ✅ Build interpretable models with comprehensive XAI
-
-### Key Achievements
-- **Sleep Analysis**: 87% accuracy with supervised MLP, comprehensive unsupervised clustering with 4 XAI components
-- **Mental Disorder Classification**: Multiple approaches tested (Random Forest, feature engineering, neural networks) despite challenging dataset
-- **Complete Pipeline**: Data acquisition → preprocessing → feature engineering → model training → explainability
-- **Research Exploration**: Investigated future possibilities with EEG data
+**Autor**: Erich  
+**Hochschule**: DHBW - 5. Semester  
+**Datum**: November 2025  
+**Projekt**: Künstliche Intelligenz mit EEG-Gehirnsignalen
 
 ---
 
-## 1. Project Motivation & Journey
+## Zusammenfassung
 
-### 1.1 Why EEG Data?
+In diesem Projekt habe ich mich mit **EEG-Daten (Elektroenzephalographie)** und **Künstlicher Intelligenz** beschäftigt. Das Hauptziel war zu verstehen, wie AI mit Gehirnsignalen funktioniert. Dafür habe ich zwei Anwendungsfälle untersucht: Schlafphasen-Klassifikation und Erkennung von psychischen Störungen.
 
-I found **EEG brain signals fascinating** because they provide a direct window into brain activity. The idea that we can decode cognitive states, sleep patterns, and potentially mental health conditions from electrical signals was compelling. This led me to explore how **Artificial Intelligence** could extract meaningful patterns from these complex signals.
+### Was ich erreichen wollte
+- Verstehen, wie KI mit physiologischen Gehirnsignalen arbeitet
+- Mit einem einfachen Problem anfangen: Schlafphasen-Klassifikation (5 Stadien)
+- Komplexeres Thema erkunden: Erkennung psychischer Störungen aus EEG
+- Zukunftsmöglichkeiten erforschen (Traumanalyse, Gedankenlesen)
+- Interpretierbare Modelle mit umfassender XAI bauen
 
-### 1.2 Starting Point: Understanding AI with Sleep Phases
+### Was dabei rauskam
+- **Schlafanalyse**: 87% Genauigkeit mit überwachtem MLP, umfassendes unsupervised Clustering mit 4 XAI-Komponenten
+- **Psychische Störungen**: Mehrere Ansätze getestet (Random Forest, Feature Engineering, neuronale Netze) - trotz schwierigem Datensatz
+- **Komplette Pipeline**: Datenbeschaffung → Preprocessing → Feature Engineering → Modelltraining → Erklärbarkeit
+- **Forschung**: Untersuchung zukünftiger Möglichkeiten mit EEG
 
-To understand how AI works with EEG data, I decided to **start with an accessible problem**: sleep stage classification.
+---
 
-**Why sleep phases?**
-- Well-defined problem with clear ground truth (5 stages: Wake, REM, N1, N2, N3)
-- Established research with known patterns (delta waves in deep sleep, etc.)
-- Rich physiological signals (EEG, EOG, EMG)
-- Practical applications in sleep medicine
+## 1. Motivation & Projektverlauf
 
-**Challenges encountered:**
-1. **Data Acquisition** - Finding quality, freely available EEG datasets was difficult
-   - Solution: Discovered PhysioNet's Sleep-EDF database (~415K samples)
-   - Learning: Data availability is a major bottleneck in biomedical AI
+### 1.1 Warum EEG-Daten?
 
-2. **Data Format Complexity** - EDF file format required specialized libraries (MNE-Python)
-   - Solution: Built preprocessing pipeline using MNE
-   - Learning: Domain-specific tools are essential for medical data
+Ich fand **EEG-Gehirnsignale faszinierend**, weil sie einen direkten Einblick in die Gehirnaktivität geben. Die Idee, dass man aus elektrischen Signalen kognitive Zustände, Schlafmuster und möglicherweise psychische Erkrankungen entschlüsseln kann, hat mich interessiert. Deshalb wollte ich erforschen, wie **Künstliche Intelligenz** aus diesen komplexen Signalen Muster extrahieren kann.
 
-3. **Feature Engineering** - Raw EEG signals needed transformation into meaningful features
-   - Solution: Extracted spectral features (frequency bands: delta, theta, alpha, beta, gamma)
-   - Learning: Domain knowledge crucial for effective feature design
+### 1.2 Startpunkt: KI verstehen mit Schlafphasen
 
-### 1.3 Two Approaches Explored
+Um zu verstehen, wie KI mit EEG-Daten funktioniert, habe ich mich entschieden, **mit einem zugänglicheren Problem anzufangen**: Schlafphasen-Klassifikation.
+
+**Warum Schlafphasen?**
+- Gut definiertes Problem mit klarer Ground Truth (5 Stadien: Wach, REM, N1, N2, N3)
+- Etablierte Forschung mit bekannten Mustern (z.B. Delta-Wellen im Tiefschlaf)
+- Reichhaltige physiologische Signale (EEG, EOG, EMG)
+- Praktische Anwendungen in der Schlafmedizin
+
+**Herausforderungen:**
+
+1. **Datenbeschaffung** - Hochwertige, frei verfügbare EEG-Datensätze zu finden war schwierig
+   - Lösung: PhysioNet's Sleep-EDF Datenbank gefunden (~415K Samples)
+   - Erkenntnis: Datenverfügbarkeit ist ein großes Problem in der biomedizinischen KI
+
+2. **Datenformat-Komplexität** - EDF-Dateiformat benötigt spezialisierte Bibliotheken (MNE-Python)
+   - Lösung: Preprocessing-Pipeline mit MNE gebaut
+   - Erkenntnis: Domänenspezifische Tools sind für medizinische Daten essenziell
+
+3. **Feature Engineering** - Rohe EEG-Signale mussten in aussagekräftige Features transformiert werden
+   - Lösung: Spektrale Features extrahiert (Frequenzbänder: Delta, Theta, Alpha, Beta, Gamma)
+   - Erkenntnis: Fachwissen ist entscheidend für effektives Feature-Design
+
+### 1.3 Zwei Ansätze
 
 #### Supervised Learning (MLP Classifier)
-**Goal**: Train a model to predict sleep stages from labeled data
+**Ziel**: Ein Modell trainieren, das Schlafstadien aus gelabelten Daten vorhersagt
 
-**Process:**
-- Used expert-labeled sleep stages from Sleep-EDF
-- Extracted 24 engineered features per 30-second epoch
-- Trained Multi-Layer Perceptron (MLP) neural network
-- Achieved **87% test accuracy**
+**Vorgehen:**
+- Expertengelabelte Schlafstadien von Sleep-EDF verwendet
+- 24 engineered Features pro 30-Sekunden-Epoche extrahiert
+- Multi-Layer Perceptron (MLP) neuronales Netz trainiert
+- **87% Test-Genauigkeit** erreicht
 
-**Key Insights:**
-- Deep learning works well when labeled data is abundant
-- Feature engineering significantly impacts performance
-- Class imbalance (fewer N1/REM samples) affects per-class accuracy
+**Erkenntnisse:**
+- Deep Learning funktioniert gut, wenn genug gelabelte Daten vorhanden sind
+- Feature Engineering hat großen Einfluss auf die Performance
+- Klassenungleichgewicht (weniger N1/REM Samples) beeinflusst die Klassengenauigkeit
 
 #### Unsupervised Learning (Autoencoder + Clustering)
-**Goal**: Discover sleep patterns without using labels (pure discovery)
+**Ziel**: Schlafmuster entdecken, ohne Labels zu verwenden (reine Mustererkennung)
 
-**Process:**
-- Trained autoencoder to compress 24D features → 8D latent space
-- Applied PCA for visualization (8D → 3D)
-- Used K-Means to discover 5 clusters
-- Validated against true labels post-hoc
+**Vorgehen:**
+- Autoencoder trainiert: 24D Features → 8D Latent Space komprimiert
+- PCA zur Visualisierung angewendet (8D → 3D)
+- K-Means verwendet, um 5 Cluster zu entdecken
+- Post-hoc gegen echte Labels validiert
 
-**Why this approach?**
-- Tests whether AI can "rediscover" sleep stages without being told
-- More explainable through comprehensive XAI analysis
-- Useful when labeled data is unavailable
+**Warum dieser Ansatz?**
+- Testet, ob KI Schlafstadien "wiederentdecken" kann, ohne es gesagt zu bekommen
+- Besser erklärbar durch umfassende XAI-Analyse
+- Nützlich, wenn keine gelabelten Daten verfügbar sind
 
-**Key Insights:**
-- Unsupervised methods can discover meaningful patterns matching expert knowledge
-- Explainability is crucial for trust in biomedical AI
-- 4 XAI components revealed what the model learned (delta power → deep sleep, etc.)
-
----
-
-## 2. Mental Disorder Detection: A More Challenging Problem
-
-After success with sleep classification, I wanted to tackle a **more complex and clinically relevant problem**: detecting mental disorders from EEG signals.
-
-### 2.1 The Dataset Challenge
-
-**Dataset**: EEG.machinelearing_data_BRMH.csv (mental disorder EEG features)
-
-**Major Issues Encountered:**
-1. **High Dimensionality** - Too many variables (features) relative to sample size
-   - Problem: Risk of overfitting, curse of dimensionality
-   - Approach: Tried dimensionality reduction, feature selection
-
-2. **Small Sample Size** - Not enough data for deep learning
-   - Problem: Neural networks need thousands/millions of samples
-   - Approach: Started with simpler models (Random Forest)
-
-3. **Class Imbalance** - Some disorders had very few samples
-   - Problem: Model bias toward majority classes
-   - Approach: Focused on binary classification (addictive disorder detection)
-
-### 2.2 Multiple Approaches Tested
-
-Despite the challenging dataset, I **experimented with different approaches**:
-
-#### Approach 1: Random Forest Classifier
-**File**: `notebooks/mental_disorders/train_binary_randomforest.ipynb`
-
-**Why this approach:**
-- Robust to high dimensionality
-- Built-in feature importance
-- No assumption about data distribution
-
-**Parameter tuning attempted:**
-- Number of trees (100, 200, 500)
-- Max depth (10, 20, 30, None)
-- Min samples split (2, 5, 10)
-- Class weights to handle imbalance
-
-**Learning:** Tree-based methods provide good baselines and interpretability
-
-#### Approach 2: Feature Engineering
-**File**: `notebooks/mental_disorders/train_engineered_features.ipynb`
-
-**Strategy:**
-- Manual feature selection based on domain knowledge
-- Creating interaction features
-- Polynomial features for non-linear patterns
-
-**Learning:** Feature engineering helps but limited by small dataset size
-
-#### Approach 3: Neural Network
-**File**: `notebooks/mental_disorders/train_neural_network.ipynb`
-
-**Experiments:**
-- Varying network depth (2-4 hidden layers)
-- Different activation functions (ReLU, tanh)
-- Dropout rates (0.2, 0.3, 0.5) to prevent overfitting
-- Batch normalization
-- Learning rate schedules
-
-**Learning:** Deep learning requires significantly more data than available
-
-### 2.3 Key Takeaways from Mental Disorder Classification
-
-**What worked:**
-- Random Forest performed reasonably well for binary classification
-- Feature importance analysis revealed some discriminative EEG patterns
-- Explainability tools helped validate model logic
-
-**What didn't work:**
-- Deep learning struggled with limited data
-- Multi-class classification (all disorders) had poor performance
-- Oversampling techniques (SMOTE) didn't significantly help
-
-**Main Lesson**: 
-> **Data quality and quantity matter more than model complexity**. No amount of parameter tuning compensates for insufficient data.
+**Erkenntnisse:**
+- Unsupervised Methoden können sinnvolle Muster finden, die mit Expertenwissen übereinstimmen
+- Erklärbarkeit ist entscheidend für Vertrauen in biomedizinische KI
+- 4 XAI-Komponenten haben gezeigt, was das Modell gelernt hat (z.B. Delta-Power → Tiefschlaf)
 
 ---
 
-## 3. Exploration of Future Possibilities
+## 2. Erkennung psychischer Störungen: Ein schwierigeres Problem
 
-### 3.1 Brain Activity During Dreams
+Nach dem Erfolg mit der Schlafklassifikation wollte ich ein **komplexeres und klinisch relevanteres Problem** angehen: Erkennung psychischer Störungen aus EEG-Signalen.
 
-**Interest**: Can we decode dream content from EEG signals?
+### 2.1 Das Datensatz-Problem
 
-**Research Findings:**
-- REM sleep shows distinct brain patterns
-- Dream recall correlates with specific EEG frequencies
-- Frontier research using fMRI + deep learning to reconstruct visual imagery
+**Datensatz**: EEG.machinelearing_data_BRMH.csv (EEG-Features für psychische Störungen)
 
-**Data Availability**: ❌ No free, quality datasets for dream decoding
-- Most research uses expensive fMRI, not just EEG
-- Proprietary datasets from research institutions
-- Privacy/ethical concerns limit public data
+**Große Probleme:**
 
-**Interesting Articles Reviewed:**
-- Neuroscience studies on dream state EEG signatures
-- Deep learning approaches to decode visual perception from brain signals
-- Ethical implications of "mind reading" technology
+1. **Hohe Dimensionalität** - Zu viele Variablen (Features) im Verhältnis zur Stichprobengröße
+   - Problem: Risiko von Overfitting, Fluch der Dimensionalität
+   - Ansatz: Dimensionsreduktion und Feature-Selektion getestet
 
-### 3.2 Thought Decoding from EEG
+2. **Kleine Stichprobengröße** - Nicht genug Daten für Deep Learning
+   - Problem: Neuronale Netze brauchen Tausende/Millionen von Samples
+   - Ansatz: Mit einfacheren Modellen angefangen (Random Forest)
 
-**Interest**: Can we determine what a person is thinking?
+3. **Klassenungleichgewicht** - Manche Störungen hatten sehr wenige Samples
+   - Problem: Modell-Bias zu Mehrheitsklassen
+   - Ansatz: Fokus auf binäre Klassifikation (Suchterkrankungen)
 
-**Research Findings:**
-- Brain-Computer Interfaces (BCI) can detect motor imagery
-- Limited success with language/thought decoding from EEG alone
-- fMRI + advanced deep learning shows promise
+### 2.2 Verschiedene Ansätze getestet
 
-**Data Availability**: ❌ No accessible datasets for thought classification
-- Requires controlled lab experiments
-- Subject-specific calibration needed
-- Most work is proprietary or requires expensive equipment
+Trotz des schwierigen Datensatzes habe ich **mit verschiedenen Ansätzen experimentiert**:
 
-**Key Insight**: 
-> While fascinating, practical thought decoding is still in early research stages. EEG resolution is limited compared to fMRI.
+#### Ansatz 1: Random Forest Classifier
+**Datei**: `notebooks/mental_disorders/train_binary_randomforest.ipynb`
 
-### 3.3 What the Future Holds
+**Warum dieser Ansatz:**
+- Robust gegenüber hoher Dimensionalität
+- Eingebaute Feature Importance
+- Keine Annahmen über Datenverteilung
 
-**Promising Directions:**
-- **Real-time BCIs**: Control devices with thought (motor imagery)
-- **Mental health monitoring**: Early detection of depression, anxiety
-- **Cognitive load assessment**: Optimize learning, detect drowsiness
-- **Personalized medicine**: EEG biomarkers for treatment selection
+**Parameter-Tuning versucht:**
+- Anzahl der Bäume (100, 200, 500)
+- Max Tiefe (10, 20, 30, None)
+- Min Samples Split (2, 5, 10)
+- Class Weights für Ungleichgewicht
 
-**Technical Barriers:**
-- Need for larger, higher-quality public datasets
-- Signal noise and artifact removal remain challenging
-- Individual variability requires personalized models
-- Ethical frameworks for brain data privacy
+**Erkenntnis:** Baumbasierte Methoden bieten gute Baselines und Interpretierbarkeit
+
+#### Ansatz 2: Feature Engineering
+**Datei**: `notebooks/mental_disorders/train_engineered_features.ipynb`
+
+**Strategie:**
+- Manuelle Feature-Selektion basierend auf Fachwissen
+- Interaktions-Features erstellen
+- Polynom-Features für nichtlineare Muster
+
+**Erkenntnis:** Feature Engineering hilft, aber wird durch kleine Datensatzgröße limitiert
+
+#### Ansatz 3: Neuronales Netz
+**Datei**: `notebooks/mental_disorders/train_neural_network.ipynb`
+
+**Experimente:**
+- Verschiedene Netzwerktiefen (2-4 Hidden Layers)
+- Unterschiedliche Aktivierungsfunktionen (ReLU, tanh)
+- Dropout-Raten (0.2, 0.3, 0.5) gegen Overfitting
+- Batch Normalization
+- Learning Rate Schedules
+
+**Erkenntnis:** Deep Learning braucht deutlich mehr Daten als verfügbar
+
+### 2.3 Wichtige Erkenntnisse
+
+**Was funktioniert hat:**
+- Random Forest hat für binäre Klassifikation halbwegs gut funktioniert
+- Feature Importance Analyse zeigte einige diskriminative EEG-Muster
+- Explainability-Tools halfen, Modelllogik zu validieren
+
+**Was nicht funktioniert hat:**
+- Deep Learning hatte Probleme mit begrenzten Daten
+- Multi-Klassen-Klassifikation (alle Störungen) hatte schlechte Performance
+- Oversampling-Techniken (SMOTE) haben nicht wirklich geholfen
+
+**Hauptlektion**: 
+> **Datenqualität und -menge sind wichtiger als Modellkomplexität**. Keine Menge an Parameter-Tuning kann unzureichende Daten kompensieren.
 
 ---
 
-## 4. Technical Implementation & Results
+## 3. Erforschung zukünftiger Möglichkeiten & Aktuelle Forschung
 
-### 4.1 Sleep Stage Classification - Supervised Approach
+Nach meiner Arbeit mit Schlafphasen und psychischen Störungen wollte ich wissen, **was EEG + KI heute schon kann** und **was in Zukunft möglich sein wird**. Dafür habe ich aktuelle Forschung und Papers zu EEG-basierter KI durchgesehen.
 
-**Model**: Multi-Layer Perceptron (MLP)
+### 3.1 Was EEG + KI heute bereits kann
 
-**Architecture:**
+**Klinische Diagnostik:**
+- **97-99% Genauigkeit** bei Erkennung von Epilepsie, Demenz, Schizophrenie, Depression
+- Biomarker-Entdeckung für neurologische Erkrankungen
+- Früherkennung von Demenz noch vor Symptombeginn
+- Automatisierte Unterscheidung psychiatrischer Störungen anhand EEG-Signaturen
+- Echtzeit-Anfallsvorhersage bei Epilepsie
+
+**Brain-Computer Interfaces (BCIs):**
+- Nicht-invasive Kommunikation und Gerätesteuerung über EEG
+- Motorische Vorstellung: **80-95% Genauigkeit** (2 Klassen), ~77% (3 Klassen)
+- Ermöglicht Steuerung von Rollstühlen, Prothesen, Computern
+
+**Kognitive Überwachung:**
+- Echtzeit-Monitoring von Stress, Aufmerksamkeit, Wachheit
+- Emotionserkennung aus EEG-Mustern
+- Kognitive Belastungsmessung
+
+**Visuelle Rekonstruktion:**
+- Bild-/Objekterkennung aus EEG: **40-99% Genauigkeit**
+- Rekonstruktion dessen, was eine Person sieht oder sich vorstellt
+- Semantische Objektvorstellung: **85-89% Genauigkeit**
+
+### 3.2 Traumdekodierung - Aktueller Stand
+
+**Was bereits funktioniert:**
+
+**Traumerkennung (Detection):**
+- **90-99% Genauigkeit** beim Erkennen von NREM-Träumen
+- Funktioniert sogar mit weniger Elektroden (30-40 Kanäle)
+- Binäre Klassifikation "träumt/träumt nicht" ist zuverlässig gelöst
+
+**Trauminhalt-Klassifikation (Content):**
+- Deutlich schwieriger als reine Erkennung
+- Aktuelle Systeme: **Dream2Image**, **Sleep Interpreter**
+- Diese können EEG → Traumbeschreibungen oder Bilder mappen
+- Emotionsklassifikation in Träumen: **70-80% Genauigkeit**
+
+**Was noch nicht geht:**
+- ❌ Vollständige narrative Rekonstruktion von Träumen
+- ❌ Detaillierte Handlungsverläufe aus EEG extrahieren
+- ❌ Hochauflösende visuelle Trauminhalte dekodieren
+
+**Hauptproblem**: 
+> Traumerkennung ist gelöst (90-99%), aber **Trauminhalt-Dekodierung** bleibt eine offene Forschungsfrage. EEG liefert nicht genug räumliche Auflösung für detaillierte Inhalte.
+
+**Interessante Forschung:**
+- Neurowissenschaftliche Studien über EEG-Signaturen im Traumzustand
+- Deep-Learning-Ansätze zur Dekodierung visueller Wahrnehmung
+- Kombination von EEG + fMRI für bessere räumliche Auflösung
+- Ethische Implikationen von "Gedankenlesen"-Technologie
+
+### 3.3 Gedankenlesen - Was möglich ist, was nicht
+
+**Was heute funktioniert:**
+
+**Motorische Vorstellung (Motor Imagery):**
+- Person stellt sich Bewegung vor (z.B. Hand öffnen)
+- **80-95% Genauigkeit** für 2 Klassen (z.B. links/rechts)
+- **70-85% Genauigkeit** für 3+ Klassen
+- **Praktisch einsetzbar** für BCI-Steuerung
+
+**Objektvorstellung:**
+- Person denkt an bestimmte Objekte
+- **85-89% Genauigkeit** bei semantischer Objektklassifikation
+- Funktioniert für begrenzte Objekt-Sets
+
+**Innere Sprache (Inner Speech):**
+- Person "spricht" im Kopf ohne zu reden
+- **50-74% Genauigkeit** je nach Vokabular-Größe
+- Noch nicht praktisch einsetzbar, aber vielversprechend
+
+**Was noch nicht funktioniert:**
+- ❌ **Freie Gedanken lesen** - keine EEG-zu-Text Übersetzung möglich
+- ❌ **Komplexe abstrakte Gedanken** dekodieren
+- ❌ **Vollständige Sätze** aus Gehirnaktivität rekonstruieren
+- ❌ **Hohe Bandbreite** für Echtzeit-Kommunikation
+
+**Genauigkeiten nach Aufgabentyp:**
+- Traumerkennung: 90-99%
+- Motorische Vorstellung: 80-95% (2 Klassen), 70-85% (3+ Klassen)
+- Semantische Objektvorstellung: 85-89%
+- Innere Sprache: 50-74%
+- Traumemotions-Klassifikation: 70-80%
+- Objekterkennung aus EEG: 40-99%
+
+**Haupterkenntnis**: 
+> EEG + KI ist bereits **sehr leistungsfähig für Erkennung und Klassifikation** (80-99%), aber **stark limitiert für hochauflösende Gedankendekodierung** aufgrund von Rauschen, anatomischen Unterschieden und geringer räumlicher Präzision.
+
+### 3.4 Technische Methoden in EEG-KI Forschung
+
+**Signalverarbeitung:**
+- **EMD** (Empirical Mode Decomposition) - Zerlegung in Schwingungskomponenten
+- **CSP** (Common Spatial Patterns) - Räumliche Filter für Klassendiskrimination
+- **Spektrogramme** - Zeit-Frequenz-Darstellung
+- **Time-Frequency Transforms** - Wavelet-Analysen
+
+**Deep Learning Architekturen:**
+- **CNNs** (Convolutional Neural Networks) - Räumliche + spektrale Features
+- **RNNs** (Recurrent Neural Networks) - Temporale Dynamiken erfassen
+- **GCNs** (Graph Convolutional Networks) - Elektroden als Graph-Struktur modellieren
+- **Attention Models** - Fokus auf relevante Frequenzbänder
+
+**3D Rekonstruktion:**
+- **EEG Source Imaging** - Rekonstruktion von 3D-Gehirnaktivität aus Oberflächensignalen
+
+**Warum mein Ansatz passt:**
+> Diese Methoden erklären, warum **Autoencoder + Spektrale Features** (mein Ansatz) angemessen ist. Autoencoders lernen latente Repräsentationen ähnlich wie CNNs, spektrale Features (Delta, Theta usw.) sind Standard in der EEG-Forschung.
+
+### 3.5 Kernlimitierungen von EEG (Wichtig für Diskussion)
+
+**Fundamentale technische Grenzen:**
+
+1. **Schlechte räumliche Auflösung**
+   - EEG misst nur Oberflächenaktivität
+   - Kann tiefe Gehirnstrukturen nicht präzise erfassen
+   - fMRI hat ~1mm Auflösung, EEG ~1cm
+
+2. **Hohe Inter-Subjekt-Variabilität**
+   - Modelle generalisieren oft nicht auf neue Personen
+   - Schädeldicke, Anatomie, Hirnstruktur variieren stark
+   - Erfordert personenspezifische Kalibrierung
+
+3. **Nicht-stationäre Signale**
+   - EEG ändert sich über Zeit (Müdigkeit, Stimmung, Tageszeit)
+   - Modelle müssen adaptiv sein
+
+4. **Artefakte**
+   - Muskelaktivität (Kiefer, Stirn)
+   - Augenblinzeln
+   - Elektrisches Rauschen
+   - Bewegungsartefakte
+
+5. **Begrenzte Trainingsdatensätze**
+   - Besonders bei Traum-/Gedankendekodierung
+   - Proprietäre Daten, ethische Einschränkungen
+   - Teuer zu sammeln (Schlaflabore, Langzeit-EEG)
+
+6. **Nicht geeignet für hochbandbreite Gedankenübertragung**
+   - Informationsrate zu niedrig für "Telepathie"
+   - Signalqualität limitiert Kommunikationsgeschwindigkeit
+
+**Rechtfertigung meines Ansatzes:**
+> Diese Limitierungen rechtfertigen meine Wahl von **Unsupervised Autoencoder + Clustering**, da die "wahren Labels" von Gehirnzuständen oft nicht existieren oder schwer zu definieren sind. Unsupervised Learning entdeckt natürliche Strukturen ohne Annahmen.
+
+### 3.6 Zukunftsausblick (2025-2030)
+
+**Vielversprechende Entwicklungen:**
+
+**Hybrid-BCIs:**
+- Kombination von EEG mit fMRI, EMG, Eye-Tracking
+- Bessere räumliche + zeitliche Auflösung
+- Multi-modale Datensätze (EEG + Video + Träume + fMRI)
+
+**Adaptive Modelle:**
+- Lernen benutzerspezifischer EEG-Drift über Zeit
+- Kontinuierliche Kalibrierung während Nutzung
+- Transfer Learning zwischen Personen
+
+**Klinische Anwendungen:**
+- Schlafstörungen-Diagnose und -Behandlung
+- PTSD-Therapie durch Traumanalyse
+- Psychiatrische Zustandsüberwachung
+- Früherkennung neurodegenerativer Erkrankungen
+
+**Consumer-Wearables:**
+- Apple und Startups entwickeln EEG-Geräte
+- **Erwartung: Marktreife vor 2030**
+- Alltägliches Schlaf-/Stressmonitoring
+- Integration in Smart Watches
+
+**Vollständige Traum-Dekodierung:**
+- Echtzeit-Trauminhalt-Dekodierung (volle narrative Träume)
+- Noch Zukunftsmusik, aber aktive Forschung
+
+**Was realistisch ist bis 2030:**
+- ✅ Consumer EEG-Wearables für Schlaf/Stress
+- ✅ Zuverlässige medizinische Diagnose-Tools
+- ✅ Verbesserte BCIs für Kommunikation
+- ⚠️ Teilweise Trauminhalt-Rekonstruktion
+- ❌ Vollständiges "Gedankenlesen" bleibt unwahrscheinlich
+
+**Haupterkenntnis:**
+> > Fortschritt ist **schnell**, besonders bei Traumerkennung und motorischer Vorstellung, aber **tiefe semantische Gedankendekodierung** steht noch vor großen Herausforderungen.
+
+---
+
+## 4. Technische Umsetzung & Ergebnisse
+
+### 4.1 Schlafphasen-Klassifikation - Supervised Ansatz
+
+**Modell**: Multi-Layer Perceptron (MLP)
+
+**Architektur:**
 ```
-Input (24 features)
+Input (24 Features)
     ↓
 Dense(64) + ReLU + BatchNorm + Dropout(0.3)
     ↓
@@ -245,29 +385,360 @@ Dense(16) + ReLU + BatchNorm + Dropout(0.2)
 Output(5) + Softmax
 ```
 
-**Results:**
-- **Test Accuracy**: 87%
-- **Best Performing Classes**: Wake (~92% F1), N2/N3 (~85-88% F1)
-- **Challenging Classes**: N1/REM (~75-80% F1) - transitional states harder to distinguish
+**Ergebnisse:**
+- **Test-Genauigkeit**: 87%
+- **Beste Klassen**: Wach (~92% F1), N2/N3 (~85-88% F1)
+- **Schwierige Klassen**: N1/REM (~75-80% F1) - Übergangszustände schwerer zu unterscheiden
 
-**Key Findings:**
-- Delta band power most discriminative for deep sleep (N3)
-- Alpha/beta activity distinguishes wake from sleep
-- EOG amplitude crucial for REM detection
-- Class imbalance affects minority class performance
+**Wichtige Erkenntnisse:**
+- Delta-Bandleistung am aussagekräftigsten für Tiefschlaf (N3)
+- Alpha/Beta-Aktivität unterscheidet Wachzustand von Schlaf
+- EOG-Amplitude entscheidend für REM-Erkennung
+- Klassenungleichgewicht beeinflusst Minderheitsklassen-Performance
 
-### 4.2 Sleep Stage Clustering - Unsupervised Approach
+### 4.2 Schlafphasen-Clustering - Unsupervised Ansatz
 
 **Pipeline**: Autoencoder → PCA → K-Means
 
 **Autoencoder:**
-- Compression: 24D → 8D latent space (3× reduction)
-- Loss: MSE (reconstruction error)
-- Training: 50 epochs, Adam optimizer
+- Kompression: 24D → 8D Latent Space (3× Reduktion)
+- Loss: MSE (Reconstruction Error)
+- Training: 50 Epochen, Adam Optimizer
 
 **Clustering:**
-- Algorithm: K-Means with k=5 clusters
-- Initialization: k-means++ for stability
+- Algorithmus: K-Means mit k=5 Clustern
+- Initialisierung: k-means++ für Stabilität
+- Validierung: Mehrere Durchläufe mit verschiedenen Random Seeds
+
+**Performance-Metriken:**
+- **Adjusted Rand Index (ARI)**: 0.60-0.70 (starke Übereinstimmung mit echten Labels)
+- **Normalized Mutual Information (NMI)**: 0.62-0.68
+- **Silhouette Score**: ~0.45 (moderate Cluster-Trennung)
+- **Stabilität**: 95%+ Konsistenz über Durchläufe (ARI > 0.9)
+
+**Entdeckte Cluster-Interpretationen:**
+- **Cluster 0**: Entspricht N3 (Tiefschlaf) - Hohe Delta-Power, niedrige Muskelaktivität
+- **Cluster 1**: Entspricht N2 (Schlaf) - Moderate Delta/Theta, Schlafspindeln
+- **Cluster 2**: Entspricht N1 (Dösen) - Alpha/Theta-Übergang
+- **Cluster 3**: Entspricht REM - Niedriges EMG, aktives EOG, Theta-Aktivität
+- **Cluster 4**: Entspricht Wach - Hohes Alpha/Beta, erhöhter Muskeltonus
+
+### 4.3 Explainable AI (XAI) - Vier Komponenten
+
+#### Komponente 1: Latent Space Explainability
+**Ziel**: Verstehen, was der Autoencoder gelernt hat
+
+**Methoden:**
+- PCA-Visualisierung (8D → 3D) zeigt Cluster-Trennung
+- Reconstruction Error Analyse pro Cluster
+- Feature-Korrelation in Latent-Dimensionen
+
+**Erkenntnis**: Latent Space erfasst physiologische Schlafübergänge glatt
+
+#### Komponente 2: Cluster Explainability
+**Ziel**: Physiologische Bedeutung jedes Clusters interpretieren
+
+**Methoden:**
+- Cluster-Prototypen (mittlere Feature-Werte)
+- EEG-Bandleistungs-Profile über Cluster
+- Confusion Matrix vs. echte Schlafstadien
+- Reinheits-Analyse (dominantes Stadium pro Cluster)
+
+**Erkenntnis**: Cluster stimmen mit bekannter Schlafphysiologie überein (Delta ↑ im Tiefschlaf usw.)
+
+#### Komponente 3: Feature Attribution
+**Ziel**: Identifizieren, welche Features Cluster-Zuweisungen bestimmen
+
+**Methoden:**
+- Surrogate Random Forest auf Cluster-Labels trainiert
+- Gini Feature Importance aus Tree Splits
+- Permutation Importance (Genauigkeitsabfall bei Durchmischung)
+
+**Top Features:**
+1. Delta-Bandleistung (EEG) - primärer Diskriminator
+2. Theta-Bandleistung (EEG) - Müdigkeitsmarker
+3. EMG-Energie - Muskelaktivität (Wach vs. Schlaf)
+4. Alpha-Bandleistung - Wachheitsindikator
+5. EOG-Amplitude - Augenbewegung (REM-Erkennung)
+
+**Erkenntnis**: Spektrale Features (Frequenzbänder) informativer als Zeitbereichsstatistiken
+
+#### Komponente 4: Stability Analysis
+**Ziel**: Verifizieren, dass Cluster reproduzierbar sind, keine Artefakte
+
+**Methoden:**
+- 10 Clusterings mit verschiedenen Random Seeds
+- Paarweiser ARI zwischen Durchläufen
+- NMI-Konsistenzmatrix
+- Stabilitäts-Heatmap-Visualisierung
+
+**Ergebnisse:**
+- Mittlerer paarweiser ARI: >0.9 (exzellente Stabilität)
+- Alle Durchläufe entdeckten dieselbe 5-Cluster-Struktur
+- Geringe Varianz in Cluster-Zentroiden
+
+**Erkenntnis**: Hohe Stabilität bestätigt gut definierte natürliche Muster, keine zufälligen Gruppierungen
+
+### 4.4 Psychische Störungen - Ergebnisse
+
+**Datensatz-Limitierungen:**
+- Kleine Stichprobengröße relativ zur Feature-Anzahl
+- Klassenungleichgewicht über Störungstypen
+- Hohe Dimensionalität (Fluch der Dimensionalität)
+
+**Bester Ansatz**: Random Forest (binäre Klassifikation)
+- Fokus auf Suchterkrankungserkennung
+- Feature Importance zeigte einige diskriminative Muster
+- Moderate Genauigkeit, aber unklare Generalisierung
+
+**Neuronale Netz-Experimente:**
+- Mehrere Architekturen getestet (2-4 Layer)
+- Dropout (0.2-0.5) gegen Overfitting
+- Learning Rate Tuning
+- **Ergebnis**: Overfitting trotz Regularisierung
+
+**Hauptlektion:**
+> Kleine Datensätze brauchen einfachere Modelle. Deep Learning benötigt deutlich mehr Daten als für dieses Problem verfügbar war.
+
+---
+
+## 5. Herausforderungen & Lösungen
+
+### 5.1 Datenbeschaffung
+
+**Herausforderung**: Hochwertige, freie EEG-Datensätze finden
+- **Problem**: Meiste klinische EEG-Daten sind proprietär oder eingeschränkt
+- **Lösung**: PhysioNet's Sleep-EDF verwendet (öffentlich, gut kuratiert)
+- **Erkenntnis**: Open-Data-Initiativen entscheidend für Forschungszugänglichkeit
+
+### 5.2 Preprocessing-Komplexität
+
+**Herausforderung**: EDF-Dateiformat, Signalartefakte, Rauschen
+- **Problem**: Rohes EEG erfordert spezialisierte Verarbeitung (MNE-Bibliothek Lernkurve)
+- **Lösung**: Modulare Preprocessing-Pipeline gebaut (`src/preprocessing.py`)
+- **Erkenntnis**: Domänenspezifische Tools essenziell; kann EEG nicht wie generische tabellarische Daten behandeln
+
+### 5.3 Feature Engineering
+
+**Herausforderung**: Welche Features repräsentieren Gehirnzustände am besten?
+- **Problem**: Unendliche Möglichkeiten, Fachwissen erforderlich
+- **Lösung**: Literaturrecherche → Frequenzbandleistungen (Delta, Theta, Alpha, Beta, Gamma)
+- **Erkenntnis**: Domänenexpertise + Feature Engineering > komplexe Modelle mit Rohdaten
+
+### 5.4 Klassenungleichgewicht
+
+**Herausforderung**: N1 und REM-Stadien in Schlafdaten unterrepräsentiert
+- **Problem**: Modell-Bias zu Mehrheitsklassen (N2, N3)
+- **Lösung**: Class Weights, Oversampling getestet (begrenzter Erfolg)
+- **Erkenntnis**: Ungleichgewicht ist dem Problem inhärent (Menschen verbringen mehr Zeit in N2/N3)
+
+### 5.5 Psychische Störungen Datensatz-Probleme
+
+**Herausforderung**: Hohe Dimensionalität, kleine Stichprobengröße
+- **Problem**: Deep Learning overfittet sofort
+- **Lösung**: Auf Random Forest gewechselt, aggressive Regularisierung
+- **Erkenntnis**: Modellkomplexität muss zur Datensatzgröße passen
+
+### 5.6 Interpretierbarkeit vs. Performance
+
+**Herausforderung**: Black-Box-Modelle vs. erklärbare aber einfachere Modelle
+- **Problem**: Deep Learning funktioniert gut, aber schwer zu interpretieren
+- **Lösung**: Umfassende XAI-Pipeline mit 4 komplementären Techniken
+- **Erkenntnis**: Erklärbarkeit essenziell für biomedizinische Anwendungen (Vertrauen, klinische Akzeptanz)
+
+---
+
+## 6. Wichtige Erkenntnisse & Lessons Learned
+
+### 6.1 Technische Erkenntnisse
+
+**Über Daten:**
+- Datenqualität > Modellkomplexität
+- Feature Engineering mit Fachwissen schlägt Rohdaten + komplexe Modelle
+- Klassenungleichgewicht erfordert durchdachten Umgang, nicht nur Oversampling
+- Datensatzgröße bestimmt Modellkomplexität (kleine Daten → einfache Modelle)
+
+**Über Modelle:**
+- Mit einfachen starten (Random Forest) bevor man Deep Learning versucht
+- Unsupervised Learning kann sinnvolle Muster ohne Labels entdecken
+- Ensemble-Methoden (Random Forest) robust gegenüber hoher Dimensionalität
+- Regularisierung (Dropout, Batch Norm, Weight Decay) kritisch für kleine Datensätze
+
+**Über Erklärbarkeit:**
+- XAI ist für biomedizinische KI nicht optional - es ist erforderlich für Vertrauen
+- Mehrere XAI-Techniken liefern komplementäre Einblicke
+- Stabilitätsanalyse entscheidend, um Signal von Rauschen zu unterscheiden
+- Feature Importance stimmt mit physiologischem Wissen überein (validiert Modelllogik)
+
+### 6.2 Domänen-Einblicke
+
+**Schlafphysiologie:**
+- Delta-Wellen (0.5-4 Hz) dominieren Tiefschlaf (N3)
+- Alpha-Wellen (8-13 Hz) zeigen entspannte Wachheit an
+- Theta (4-8 Hz) erscheint während Dösen und REM
+- Augenbewegungen (EOG) unterscheiden REM von anderen Stadien
+- Muskeltonus (EMG) nimmt progressiv ab von Wach → Tiefschlaf
+
+**Erkennung psychischer Störungen:**
+- EEG-Muster existieren, aber subtil im Vergleich zu Schlafstadien
+- Individuelle Variabilität hoch (erfordert personalisierte Modelle)
+- Kleine öffentliche Datensätze limitieren aktuelle Machbarkeit
+- Mehr Forschung zu robusten Biomarkern nötig
+
+### 6.3 Forschung & Zukunft
+
+**Was ich über EEG-Frontiers gelernt habe:**
+
+**Traumdekodierung:**
+- Theoretisch möglich, aber erfordert fMRI + fortgeschrittenes Deep Learning
+- EEG allein hat begrenzte räumliche Auflösung
+- Meiste Forschung ist proprietär, keine öffentlichen Datensätze
+- **Zukunft**: Kombination von EEG + fMRI könnte Trauminhalt-Rekonstruktion ermöglichen
+
+**Gedankenlesen:**
+- Motorische Vorstellungs-BCIs funktionieren gut (tippen durch Denken "links" oder "rechts")
+- Sprach-/abstrakte Gedankendekodierung noch im Frühstadium
+- Probandenspezifische Kalibrierung erforderlich
+- **Zukunft**: Verbesserte Signalverarbeitung + größere Datensätze könnten praktische BCIs ermöglichen
+
+**Mental Health Monitoring:**
+- Depression/Angst zeigen EEG-Signaturen (frontale Asymmetrie usw.)
+- Echtzeit-Monitoring könnte Frühintervention ermöglichen
+- Datenschutz und ethische Rahmenbedingungen nötig
+- **Zukunft**: Tragbares EEG für kontinuierliches Mental-Health-Tracking
+
+### 6.4 Projektmanagement
+
+**Was funktioniert hat:**
+- Mit einfacherem Problem (Schlaf) anfangen vor komplexem (psychische Störungen)
+- Modulare Code-Struktur (src/ Module wiederverwendbar über Notebooks)
+- Versionskontrolle mit klarer Commit-Strategie (Module zuerst, dann Notebooks)
+- Umfassende Dokumentation (README, Inline-Kommentare)
+- Mehrere Ansätze (supervised + unsupervised) liefern reicheres Verständnis
+
+**Was verbessert werden könnte:**
+- Frühere Literaturrecherche hätte realistische Erwartungen für Mental-Disorder-Task gesetzt
+- Mehr Zeit für Data-Augmentation-Techniken
+- Test auf zusätzlichen EEG-Datensätzen für Generalisierung
+
+---
+
+## 7. Fazit
+
+### 7.1 Projektzusammenfassung
+
+Dieses Projekt hat erfolgreich gezeigt, dass **Künstliche Intelligenz sinnvolle Muster aus EEG-Gehirnsignalen extrahieren kann**:
+
+**Schlafphasen-Klassifikation:**
+- Supervised MLP erreichte **87% Genauigkeit** - vergleichbar mit kommerziellen Schlafstaging-Systemen
+- Unsupervised Clustering **entdeckte Schlafstadien neu** ohne Labels, validiert durch 4 XAI-Komponenten
+- Physiologische Basis gelernt: Delta-Power sagt Tiefschlaf voraus, Alpha zeigt Wachheit an
+
+**Erkennung psychischer Störungen:**
+- Herausforderungen kleiner, hochdimensionaler biomedizinischer Datensätze hervorgehoben
+- Mehrere Ansätze getestet (Random Forest, Feature Engineering, neuronale Netze)
+- **Haupterkenntnis**: Datenlimitierungen einschränkender als Modellbegrenzungen
+
+**Forschungserkundung:**
+- Traumdekodierung und Gedankenlesen sind Frontier-Forschungsbereiche
+- Limitiert durch Datenverfügbarkeit und EEG-räumliche Auflösung
+- Zukünftige Verbesserungen erfordern bessere Sensoren + größere öffentliche Datensätze
+
+### 7.2 Persönliches Wachstum
+
+**Technische Fähigkeiten erworben:**
+- Deep Learning (PyTorch): Autoencoder, MLPs, Training-Pipelines
+- Unsupervised Learning: K-Means Clustering, Dimensionsreduktion (PCA)
+- Explainable AI: Feature Importance, Surrogate-Modelle, Stabilitätsanalyse
+- Signalverarbeitung: EEG-Preprocessing, Frequenzband-Extraktion
+- Scientific Computing: NumPy, SciPy, scikit-learn
+
+**Domänenwissen:**
+- Schlafphysiologie und Polysomnographie
+- EEG-Signalcharakteristiken und Artefakte
+- Biomedizinische ML-Herausforderungen (Datenknappheit, Interpretierbarkeitserfordernisse)
+- Brain-Computer Interface Forschungslandschaft
+
+**Soft Skills:**
+- Problemzerlegung (komplexes Problem → handhabbare Schritte)
+- Realistische Erwartungen setzen (wann Deep Learning angebracht ist/nicht ist)
+- Forschungserkundung vs. Implementierungs-Trade-offs
+- Technische Dokumentation und Wissensaustausch
+
+### 7.3 Zukünftige Richtungen
+
+**Nächste Schritte:**
+- Modelle auf zusätzlichen Schlafdatensätzen testen (Cross-Dataset-Validierung)
+- Temporale Modelle implementieren (LSTM/Transformer) um Schlafstadien-Übergänge zu erfassen
+- Transfer Learning von großen vortrainierten EEG-Modellen erkunden
+
+**Langfristige Möglichkeiten:**
+- Echtzeit-Schlafmonitoring-System mit Visualisierungs-Dashboard
+- Cross-Subject-Modell-Evaluation (aktuell auf gepoolten Daten trainiert)
+- Integration mit tragbaren EEG-Geräten
+- Zusammenarbeit mit Schlafkliniken für klinische Validierung
+
+### 7.4 Abschließende Reflexion
+
+Dieses Projekt hat verstärkt, dass **erfolgreiche KI mehr erfordert als nur Modelle**:
+
+> Die Kombination von **Fachwissen** (Schlafphysiologie), **passenden Daten** (Sleep-EDF Qualität), **richtig dimensionierten Modellen** (MLP/RF für Datensatzgröße) und **Erklärbarkeit** (4 XAI-Komponenten) ist das, was KI für reale biomedizinische Anwendungen wertvoll macht.
+
+Die Erforschung von EEGs Potenzial - von Schlafklassifikation über Mental Health bis zu zukünftiger Traum-/Gedankendekodierung - zeigte sowohl aufregende Möglichkeiten als auch aktuelle Limitierungen. Während manche Anwendungen Science-Fiction bleiben, sind andere (wie automatisiertes Schlafstaging) heute für klinischen Einsatz bereit.
+
+**Am wichtigsten**: Ich habe gelernt, dass **verstehen wie KI funktioniert** bedeutet, das Zusammenspiel zwischen Daten, Features, Modellen und Validierung zu verstehen - nicht nur die neueste neuronale Netzarchitektur zu implementieren.
+
+---
+
+## 8. Anhang
+
+### 8.1 Repository-Struktur
+```
+Explainable_AI/
+├── notebooks/
+│   ├── sleep_analysis/
+│   │   ├── train_sleep_classifier.ipynb (Supervised, 87% Genauigkeit)
+│   │   └── train_unsupervised_sleep_clustering.ipynb (Unsupervised + 4 XAI)
+│   └── mental_disorders/
+│       ├── train_binary_randomforest.ipynb
+│       ├── train_engineered_features.ipynb
+│       └── train_neural_network.ipynb
+├── src/ (Modulares Preprocessing, Features, Modelle)
+├── data/ (Sleep-EDF Download erforderlich, Mental Disorder Daten inkludiert)
+├── results/ (Visualisierungen, Explainability-Outputs)
+└── models/ (Gespeicherte Modellgewichte - lokal generiert)
+```
+
+### 8.2 Verwendete Technologien
+- **Deep Learning**: PyTorch 2.0+
+- **ML**: scikit-learn (Random Forest, K-Means, PCA)
+- **Signalverarbeitung**: MNE-Python, SciPy
+- **Daten**: NumPy, Pandas
+- **Visualisierung**: Matplotlib, Seaborn
+- **Explainability**: Custom XAI Pipeline, Feature Importance, SHAP-Konzepte
+
+### 8.3 Datenquellen
+- **Sleep-EDF**: https://physionet.org/content/sleep-edfx/1.0.0/
+- **Mental Disorder EEG**: EEG.machinelearing_data_BRMH.csv (im Repo inkludiert)
+
+### 8.4 Performance-Metriken
+
+**Schlafklassifikation (Supervised):**
+- Genauigkeit: 87%
+- Precision/Recall: Variiert pro Klasse (92% Wach, 75% N1)
+- Confusion Matrix: Verfügbar in `results/visualizations/`
+
+**Schlaf-Clustering (Unsupervised):**
+- ARI: 0.60-0.70 (gute Übereinstimmung mit Labels)
+- NMI: 0.62-0.68 (hohe Informationsüberlappung)
+- Silhouette: ~0.45 (moderate Trennung)
+- Stabilität: >0.9 ARI über Durchläufe (exzellente Reproduzierbarkeit)
+
+---
+
+**Ende des Berichts**
+
+*Für Fragen, Code-Details oder Zusammenarbeit: Siehe README.md und Repository-Dokumentation*
 - Validation: Multiple runs with different random seeds
 
 **Performance Metrics:**
