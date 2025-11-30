@@ -10,9 +10,10 @@ E-Mail:         eric.herrgoss@web.de
 Link zu dem Datensatz: https://www.physionet.org/content/sleep-edfx/1.0.0/
 --> Ich werde noch ein workupload link dazu schicken mit dem Datensatz weil von der Webseite des herunterzuladen braucht extrem lang 
 
-Note: Ich habe viel in Englisch gemacht weil es mir leichter viel. Außerdem habe ich KI verwendet um die Struktur und auch die Kommentare zu verbessern. 
+Note: Ich habe viel in Englisch gemacht weil es mir leichter viel. Außerdem habe ich KI verwendet um die Struktur und auch die Kommentare/Texte zu verbessern. 
 Für die Recherche hab ich viel auch mit online Datenbanken wie PsycINFO gearbeitet um Quellen oder empirische Daten zu finden. 
 Auch mit Perplexity konnte man gut Daten und Quellen finden. 
+
 
 Das Schlafphasen Model ist gut gelungen aber das Mental Disorder Model eher nicht hab viel rumexperimentiert. Binary trees haben es besser gemacht aber ned wirklich gut. Das war aber auch mal Intersant zu schauen wo man Modele verbessern kann und wie viel Daten ausmachen 
 
