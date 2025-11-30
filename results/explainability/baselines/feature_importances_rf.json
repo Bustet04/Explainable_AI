@@ -1,0 +1,124 @@
+{
+  "ranking": [
+    {
+      "rank": 1,
+      "feature": "f12",
+      "importance": 0.1214475534929981
+    },
+    {
+      "rank": 2,
+      "feature": "f00",
+      "importance": 0.10833717558778466
+    },
+    {
+      "rank": 3,
+      "feature": "f06",
+      "importance": 0.10572249136006492
+    },
+    {
+      "rank": 4,
+      "feature": "f18",
+      "importance": 0.09390516414790376
+    },
+    {
+      "rank": 5,
+      "feature": "f08",
+      "importance": 0.09316043834835713
+    },
+    {
+      "rank": 6,
+      "feature": "f04",
+      "importance": 0.07536492407702058
+    },
+    {
+      "rank": 7,
+      "feature": "f17",
+      "importance": 0.06255103571482572
+    },
+    {
+      "rank": 8,
+      "feature": "f11",
+      "importance": 0.05113674874020013
+    },
+    {
+      "rank": 9,
+      "feature": "f14",
+      "importance": 0.04727260417607378
+    },
+    {
+      "rank": 10,
+      "feature": "f01",
+      "importance": 0.03306702583388348
+    },
+    {
+      "rank": 11,
+      "feature": "f03",
+      "importance": 0.032831394150179556
+    },
+    {
+      "rank": 12,
+      "feature": "f07",
+      "importance": 0.030133804582077532
+    },
+    {
+      "rank": 13,
+      "feature": "f19",
+      "importance": 0.028138391088969674
+    },
+    {
+      "rank": 14,
+      "feature": "f09",
+      "importance": 0.02441066205026683
+    },
+    {
+      "rank": 15,
+      "feature": "f10",
+      "importance": 0.018674184588224778
+    },
+    {
+      "rank": 16,
+      "feature": "f02",
+      "importance": 0.01657461217292628
+    },
+    {
+      "rank": 17,
+      "feature": "f15",
+      "importance": 0.012881952415996942
+    },
+    {
+      "rank": 18,
+      "feature": "f22",
+      "importance": 0.010300439225385406
+    },
+    {
+      "rank": 19,
+      "feature": "f23",
+      "importance": 0.009705866666976239
+    },
+    {
+      "rank": 20,
+      "feature": "f21",
+      "importance": 0.009479552821893146
+    },
+    {
+      "rank": 21,
+      "feature": "f16",
+      "importance": 0.005227002471397874
+    },
+    {
+      "rank": 22,
+      "feature": "f13",
+      "importance": 0.003500822641169811
+    },
+    {
+      "rank": 23,
+      "feature": "f20",
+      "importance": 0.0031863217374455033
+    },
+    {
+      "rank": 24,
+      "feature": "f05",
+      "importance": 0.0029898319079780856
+    }
+  ]
+}

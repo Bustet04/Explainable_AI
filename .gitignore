@@ -36,9 +36,22 @@ data/processed/*
 models/*
 !models/README.md
 
-# Results and artifacts
-results/*
+# Results - include visualizations and reports, exclude large binary files
+results/**/*.npy
+results/**/*.joblib
+results/**/*.pth
+results/**/*.pt
+results/**/*.pkl
 !results/README.md
+!results/**/*.png
+!results/**/*.jpg
+!results/**/*.jpeg
+!results/**/*.svg
+!results/**/*.pdf
+!results/**/*.html
+!results/**/*.json
+!results/**/*.txt
+!results/**/*.md
 artifacts/
 
 # IDE

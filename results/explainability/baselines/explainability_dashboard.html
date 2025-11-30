@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Explainability Dashboard</title>
+<style>
+ body { font-family: Arial, sans-serif; margin: 0; background:#f5f7fb; color:#222; }
+ .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+ .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }
+ h1 { color: #1a73e8; }
+ h2 { margin-top: 0; }
+ pre { white-space: pre-wrap; background:#fafafa; padding:12px; border-radius:8px; }
+ .row { display:flex; gap:20px; flex-wrap:wrap; }
+ .col { flex:1; min-width: 320px; }
+ img { max-width: 100%; height: auto; border-radius: 8px; border:1px solid #eee; }
+ .muted { color:#666; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Wie arbeitet das Modell? – Erklärbares Dashboard</h1>
+  <div class="card">
+    <p>Diese Seite erklärt das Modell mit einfachen Bausteinen: (1) Welche Merkmale sind global wichtig? (2) Welche Regeln nutzt ein Entscheidungsbaum? (3) Wie sieht ein einfacher Surrogat-Baum aus, der das MLP imitiert?</p>
+  </div>
+
+  <div class="card">
+    <h2>Globale Wichtigkeit – Top Merkmale</h2>
+    <p class="muted">Ein Random Forest schätzt, welche Features am meisten zur Entscheidung beitragen.</p>
+    <img src="rf_importances.png" alt="Feature Importances" />
+  </div>
+
+  <div class="row">
+    <div class="card col">
+      <h2>Regelbasiertes Modell (Decision Tree)</h2>
+      <p class="muted">Ein flacher Blick auf die ersten Ebenen des Baums.</p>
+      <img src="decision_tree_top.png" alt="Decision Tree Top" />
+      <h3>Beispiel-Regeln (pro Blatt)</h3>
+      <pre>IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 <= 0.000 AND f08 <= 0.000 AND f02 <= 0.000 THEN class = 4
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 <= 0.000 AND f08 <= 0.000 AND f02 > 0.000 AND f17 <= 0.000 THEN class = 1
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 <= 0.000 AND f08 <= 0.000 AND f02 > 0.000 AND f17 > 0.000 THEN class = 0
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 <= 0.000 AND f08 > 0.000 AND f04 <= 0.000 AND f22 <= 0.000 THEN class = 1
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 <= 0.000 AND f08 > 0.000 AND f04 <= 0.000 AND f22 > 0.000 THEN class = 0
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 <= 0.000 AND f08 > 0.000 AND f04 > 0.000 AND f17 <= 0.000 THEN class = 1
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 <= 0.000 AND f08 > 0.000 AND f04 > 0.000 AND f17 > 0.000 THEN class = 0
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 > 0.000 AND f04 <= 0.000 AND f01 <= 0.000 AND f03 <= 0.000 THEN class = 3
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 > 0.000 AND f04 <= 0.000 AND f01 <= 0.000 AND f03 > 0.000 THEN class = 0
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 > 0.000 AND f04 <= 0.000 AND f01 > 0.000 AND f00 <= 0.000 THEN class = 0
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 > 0.000 AND f04 <= 0.000 AND f01 > 0.000 AND f00 > 0.000 THEN class = 0
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 > 0.000 AND f04 > 0.000 AND f19 <= 601.500 AND f00 <= 0.000 THEN class = 0
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 > 0.000 AND f04 > 0.000 AND f19 <= 601.500 AND f00 > 0.000 THEN class = 0
+IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 > 0.000 AND 
+... (gekürzt)</pre>
+    </div>
+    <div class="card col">
+      <h2>Surrogat-Baum fürs MLP</h2>
+      <p class="muted">Ein kleiner Baum (Tiefe=4) lernt, das MLP nachzuahmen – gut für eine globale Erklärung.</p>
+      <p><em>Kein Surrogat-Bild vorhanden.</em></p>
+      <h3>Beispielpfade</h3>
+      <pre>[N1] IF f12 <= 0.000 AND f00 <= 0.000 AND f18 > 0.000 AND f04 <= 0.000 AND f18 <= 0.000 AND f17 > 0.000 AND f00 > 0.000 AND f02 > 0.000 THEN class = N1
+[N2] IF f12 <= 0.000 AND f00 > 0.000 AND f08 <= 0.000 AND f18 <= 0.000 AND f04 > 0.000 AND f12 <= 0.000 AND f02 > 0.000 AND f04 > 0.000 THEN class = N1
+[N3] IF f12 <= 0.000 AND f00 > 0.000 AND f08 > 0.000 AND f07 <= 4.397 AND f00 > 0.000 AND f03 <= 0.000 AND f07 > 3.655 AND f17 <= 0.000 THEN class = N3
+[R] IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 > 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f00 > 0.000 AND f01 <= 0.000 THEN class = N2
+[W] IF f12 <= 0.000 AND f00 <= 0.000 AND f18 <= 0.000 AND f08 <= 0.000 AND f04 > 0.000 AND f04 <= 0.000 AND f01 > 0.000 AND f00 <= 0.000 THEN class = N1
+</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Kurzzusammenfassung der Metriken</h2>
+    <p><strong>Decision Tree:</strong> Accuracy: 0.801 | Balanced Acc.: 0.721 | Cohen's κ: 0.639</p>
+    <p><strong>Random Forest:</strong> Accuracy: 0.880 | Balanced Acc.: 0.794 | Cohen's κ: 0.769</p>
+    <p><em>Surrogat (Fidelity zum MLP): keine Daten gefunden.</em></p>
+  </div>
+
+  <div class="card">
+    <p class="muted">Tipp: Regeln lesen sich wie IF-THEN-Statements. Beispiel: "IF alpha_power <= 0.12 AND delta_power > 0.05 THEN class = R"</p>
+  </div>
+</div>
+</body>
+</html>
