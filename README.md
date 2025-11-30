@@ -6,6 +6,45 @@
 
 An academic project implementing **supervised** and **unsupervised** machine learning approaches for sleep phase detection using EEG/EOG/EMG physiological signals, with comprehensive **Explainable AI (XAI)** analysis.
 
+---
+
+## ⚡ Quick Start Guide (New Users)
+
+**Want to try it immediately?** → Run the mental disorder notebooks (data included!)
+
+**Want sleep analysis?** → Download Sleep-EDF dataset first (see instructions below)
+
+### What's Included in This Repository
+
+✅ **5 Training Notebooks** - Ready to run  
+✅ **Mental Disorder EEG Dataset** - Included (no download needed)  
+✅ **Source Code Modules** - Reusable preprocessing and feature extraction  
+✅ **Results & Visualizations** - Example outputs from trained models  
+✅ **Complete Documentation** - This README + inline notebook explanations  
+
+❌ **Sleep-EDF Dataset** - NOT included (too large, ~2GB)  
+❌ **Trained Models** - NOT included (you'll generate these locally)  
+
+### Installation (3 steps, ~2 minutes)
+
+```bash
+# 1. Clone repository
+git clone https://github.com/Bustet04/Explainable_AI.git
+cd Explainable_AI
+
+# 2. Create virtual environment
+python -m venv .venv
+.venv\Scripts\Activate.ps1  # Windows
+# OR: source .venv/bin/activate  # Linux/macOS
+
+# 3. Install dependencies
+pip install -r requirements.txt
+```
+
+**That's it!** Now jump to [Quick Start](#quick-start) below to choose which notebooks to run.
+
+---
+
 ## 🎯 Project Overview
 
 This repository contains two complementary approaches to automatic sleep stage classification:
@@ -37,7 +76,7 @@ An Autoencoder-based approach to discover sleep patterns without using labels, v
 
 | Aspect | Supervised Classifier | Unsupervised Clustering |
 |--------|----------------------|-------------------------|
-| **Notebook** | `train_sleep_classifier.ipynb` | `train_unsupervised_sleep_clustering.ipynb` |
+| **Notebook** | `notebooks/sleep_analysis/train_sleep_classifier.ipynb` | `notebooks/sleep_analysis/train_unsupervised_sleep_clustering.ipynb` |
 | **Algorithm** | MLP Neural Network | Autoencoder + K-Means |
 | **Labels Required** | Yes (for training) | No (discovery-based) |
 | **Performance** | 87% test accuracy | ARI: 0.65, NMI: 0.62 |
@@ -45,6 +84,7 @@ An Autoencoder-based approach to discover sleep patterns without using labels, v
 | **Training Time** | ~2-5 minutes | ~10-15 minutes (includes XAI) |
 | **Use Case** | Clinical deployment, automation | Pattern discovery, research, exploration |
 | **Advantage** | Precise predictions | No labeled data needed, explainable patterns |
+| **Data Required** | Sleep-EDF dataset (download) | Sleep-EDF dataset (download) |
 
 ## 📁 Project Structure
 
@@ -57,35 +97,39 @@ Explainable_AI/
 ├── .gitignore                        # Git ignore rules
 ├── GIT_WORKFLOW.md                   # Git usage guide
 │
-├── Code/Projekt/                      # Main project notebooks (original location)
-│   ├── train_sleep_classifier.ipynb           # Supervised MLP (87% accuracy)
-│   ├── train_unsupervised_sleep_clustering.ipynb  # Unsupervised + XAI
-│   ├── data_preprocessing.py          # Feature extraction pipeline
-│   ├── data_summary.py                # Dataset statistics
+├── notebooks/                         # Training notebooks
+│   ├── sleep_analysis/
+│   │   ├── train_sleep_classifier.ipynb           # Supervised MLP (87% accuracy)
+│   │   └── train_unsupervised_sleep_clustering.ipynb  # Unsupervised + XAI
+│   └── mental_disorders/
+│       ├── train_binary_randomforest.ipynb        # Random Forest classifier
+│       ├── train_engineered_features.ipynb        # Feature engineering approach
+│       └── train_neural_network.ipynb             # Deep learning classifier
+│
+├── src/                               # Modular source code
+│   ├── preprocessing.py               # Signal preprocessing utilities
+│   ├── features.py                    # Feature extraction functions
+│   ├── model.py                       # Model architectures
+│   ├── data_preprocessing_v2.py       # Extended preprocessing pipeline
+│   ├── data_summary_v2.py             # Dataset statistics
 │   └── ui_streamlit.py                # Interactive demo app
 │
-├── data/
-│   ├── raw/                          # Raw physiological signals (excluded)
-│   └── processed/                    # Preprocessed features (excluded)
-│       ├── features.npy              # 24 engineered features per epoch
-│       └── labels.npy                # Sleep stage labels (N1, N2, N3, REM, Wake)
+├── data/                              # Data directory
+│   ├── mental_disorders/
+│   │   └── EEG.machinelearing_data_BRMH.csv  # Mental disorder EEG dataset (included)
+│   ├── raw/                           # Raw sleep signals (download separately)
+│   └── processed/                     # Preprocessed features (generated by notebooks)
 │
-├── src/                              # Modular source code
-│   ├── preprocessing.py              # Signal preprocessing utilities
-│   ├── features.py                   # Feature extraction functions
-│   └── model.py                      # Model architectures
+├── models/                            # Trained models (generated locally, excluded from repo)
+│   ├── saved_models/                  # Supervised classifiers
+│   └── unsupervised_clustering/       # Autoencoder, K-Means, XAI results
 │
-├── notebooks/                        # Jupyter notebooks (clean versions for repo)
-│   └── [Cleaned notebooks will be moved here]
+├── results/                           # Output artifacts
+│   ├── visualizations/                # Training plots, confusion matrices
+│   └── explainability/                # XAI analysis results
 │
-├── docs/                             # Documentation
-│   └── report.md                     # Analysis report template
-│
-├── models/                           # Trained models (excluded from repo)
-│   ├── saved_models/                 # Supervised classifiers
-│   └── unsupervised_clustering/      # Autoencoder, K-Means, XAI results
-│
-└── results/                          # Output artifacts (excluded from repo)
+└── docs/                              # Documentation
+    └── report.md                      # Analysis report template
 ```
 
 ## 🚀 Getting Started
@@ -122,34 +166,92 @@ Explainable_AI/
 
 ### Quick Start
 
-#### **1. Supervised Sleep Classification** (Recommended for beginners)
+#### **Option 1: Mental Disorder Classification** (Easiest - data included!)
+
+The mental disorder classification notebooks come with data included, so you can start immediately:
 
 ```bash
-jupyter notebook Code/Projekt/train_sleep_classifier.ipynb
+# Start Jupyter
+jupyter notebook
+
+# Open any of these notebooks:
+# - notebooks/mental_disorders/train_binary_randomforest.ipynb
+# - notebooks/mental_disorders/train_engineered_features.ipynb
+# - notebooks/mental_disorders/train_neural_network.ipynb
 ```
 
 **What you'll get:**
-- 87% classification accuracy on test set
-- Confusion matrix and per-class metrics
-- Feature importance analysis
+- Pre-loaded EEG dataset for mental disorder classification
+- Multiple ML approaches (Random Forest, feature engineering, neural networks)
+- Ready to run without additional data downloads
 - Training time: ~2-5 minutes
 
-#### **2. Unsupervised Pattern Discovery** (Advanced XAI)
+#### **Option 2: Sleep Analysis** (Requires dataset download)
+
+For sleep stage classification, you need to download the Sleep-EDF dataset first:
+
+**Step 1: Download Sleep-EDF Dataset**
 
 ```bash
-jupyter notebook Code/Projekt/train_unsupervised_sleep_clustering.ipynb
+# Download from PhysioNet (option 1 - manual)
+# Visit: https://physionet.org/content/sleep-edfx/1.0.0/
+# Download the sleep-cassette files to data/raw/
+
+# OR use wget (option 2 - command line)
+cd data/raw
+wget -r -N -c -np https://physionet.org/files/sleep-edfx/1.0.0/sleep-cassette/
+```
+
+**Step 2: Run Preprocessing (First Time Only)**
+
+```python
+# Run preprocessing to generate features
+from src.data_preprocessing_v2 import SleepDataPreprocessor
+
+preprocessor = SleepDataPreprocessor('data/raw/sleep-cassette')
+features, labels = preprocessor.process_all_recordings()
+
+# Save processed data
+import numpy as np
+np.save('data/processed/features.npy', features)
+np.save('data/processed/labels.npy', labels)
+```
+
+**Step 3: Train Models**
+
+```bash
+# Supervised classifier (87% accuracy)
+jupyter notebook notebooks/sleep_analysis/train_sleep_classifier.ipynb
+
+# Unsupervised clustering with XAI
+jupyter notebook notebooks/sleep_analysis/train_unsupervised_sleep_clustering.ipynb
 ```
 
 **What you'll get:**
-- Discovered 5 sleep phase clusters (unsupervised)
-- 4 comprehensive XAI components
-- 20+ publication-quality visualizations
-- Complete analysis report
-- Training time: ~10-15 minutes
+- 87% classification accuracy on supervised model
+- Comprehensive XAI analysis on unsupervised approach
+- 20+ visualizations in results/
+- Trained models saved in models/
+- Training time: 10-15 minutes total
 
 ## 📊 Dataset
 
+### Mental Disorder Classification Dataset (Included ✅)
+
+**File**: `data/mental_disorders/EEG.machinelearing_data_BRMH.csv`
+
+This dataset is included in the repository and ready to use immediately.
+
+**What it contains:**
+- EEG features for mental disorder classification
+- Pre-processed and ready for training
+- Used by notebooks in `notebooks/mental_disorders/`
+
+### Sleep-EDF Database (Download Required 📥)
+
 **Source**: [Sleep-EDF Database Expanded (PhysioNet)](https://physionet.org/content/sleep-edfx/1.0.0/)
+
+⚠️ **Note**: Due to size constraints, the Sleep-EDF dataset is NOT included in the repository. You must download it separately.
 
 **Physiological Signals:**
 - 2 EEG channels (Fpz-Cz, Pz-Oz)
@@ -169,6 +271,24 @@ jupyter notebook Code/Projekt/train_unsupervised_sleep_clustering.ipynb
 - **EEG features** (per channel): Delta, theta, alpha, beta, gamma band powers + mean, std, kurtosis
 - **EOG features**: Mean, std, max amplitude, zero crossings
 - **EMG features**: Mean, std, absolute mean, energy
+
+**Download Instructions:**
+
+1. **Manual Download:**
+   - Visit: https://physionet.org/content/sleep-edfx/1.0.0/
+   - Download sleep-cassette folder
+   - Extract to `data/raw/sleep-cassette/`
+
+2. **Command Line (Linux/macOS):**
+   ```bash
+   cd data/raw
+   wget -r -N -c -np https://physionet.org/files/sleep-edfx/1.0.0/sleep-cassette/
+   ```
+
+3. **After Download:**
+   - Run preprocessing script (see Quick Start above)
+   - Generated files: `data/processed/features.npy` and `labels.npy`
+   - These are excluded from git (too large) but notebooks will generate them
 
 ## 🧠 Model Architectures
 
@@ -313,12 +433,12 @@ See `requirements.txt` for complete dependency list.
 
 ## 📂 Saved Models & Artifacts
 
-After running the notebooks, the following artifacts are saved:
+After running the notebooks, the following artifacts are automatically generated:
 
 **Supervised Classifier** (`models/saved_models/`):
-- `sleep_classifier.pth` - Trained MLP model
+- `sleep_classifier.joblib` - Trained MLP model
+- `pytorch_sleep_model.pt` - PyTorch model weights
 - `feature_scaler.joblib` - StandardScaler for features
-- `label_encoder.joblib` - Encoder for sleep stage labels
 
 **Unsupervised Clustering** (`models/unsupervised_clustering/`):
 - `autoencoder.pth` - Trained autoencoder weights
@@ -330,6 +450,12 @@ After running the notebooks, the following artifacts are saved:
 - `cluster_labels.npy` - Predicted cluster assignments
 - `xai_results.joblib` - All XAI metrics and results
 - `analysis_report.txt` - Comprehensive text report
+
+**Results & Visualizations** (`results/`):
+- `results/visualizations/` - Training curves, confusion matrices, feature distributions
+- `results/explainability/` - XAI analysis outputs, feature importances, decision trees
+
+⚠️ **Note**: Models are excluded from git (`.gitignore`) due to size. They are generated when you run the notebooks locally.
 
 ## 🎓 Educational Value
 
@@ -343,6 +469,50 @@ This project demonstrates:
 ✅ **Domain Knowledge**: Physiological signal processing, sleep science  
 ✅ **Best Practices**: Modular code, reproducibility, documentation  
 ✅ **Evaluation Metrics**: ARI, NMI, silhouette, confusion matrices  
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**1. "ModuleNotFoundError: No module named 'X'"**
+```bash
+# Make sure virtual environment is activated
+.venv\Scripts\Activate.ps1  # Windows
+source .venv/bin/activate    # Linux/macOS
+
+# Reinstall dependencies
+pip install -r requirements.txt
+```
+
+**2. "FileNotFoundError: data/processed/features.npy"**
+- For sleep analysis: You need to download and preprocess the Sleep-EDF dataset first
+- See "Quick Start - Option 2" above for download instructions
+- For mental disorders: Data is included, check path `data/mental_disorders/EEG.machinelearing_data_BRMH.csv`
+
+**3. "Kernel died / Out of memory"**
+- Sleep dataset is large (~415K samples)
+- Requires minimum 8GB RAM
+- Try closing other applications
+- Or reduce batch size in training notebooks
+
+**4. "Results/models folders are empty"**
+- These are generated when you run notebooks
+- Model files are excluded from git (`.gitignore`)
+- Run notebooks to generate them locally
+
+**5. "Notebook kernel not found"**
+```bash
+# Install ipykernel in virtual environment
+pip install ipykernel
+python -m ipykernel install --user --name=explainable_ai
+```
+
+### Where to Get Help
+
+- 📖 Check `GIT_WORKFLOW.md` for git-specific issues
+- 📊 Review `results/` for example outputs
+- 📝 Read notebook markdown cells for detailed explanations
+- 🐛 Open an issue on GitHub for bugs  
 
 ## 📖 Key Concepts Covered
 
